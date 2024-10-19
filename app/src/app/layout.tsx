@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+import "./globals.css";
+import { TextsyncProvider } from "@/features/textsync/contexts/TextsyncContext";
+
 export const metadata: Metadata = {
   title: "Realtime Text Share",
   description: "",
@@ -12,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="font-mono">
+        <TextsyncProvider>{children}</TextsyncProvider>
+      </body>
     </html>
   );
 }
