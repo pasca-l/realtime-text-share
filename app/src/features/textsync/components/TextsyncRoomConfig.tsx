@@ -4,6 +4,7 @@ import { ChangeEvent, useEffect, useRef, useState, KeyboardEvent } from "react";
 
 import { useTextsyncContext } from "../contexts/TextsyncContext";
 import { generateRoomId } from "../utils/room";
+import { addData, deleteData } from "../utils/database";
 
 export default function TextsyncRoomConfig() {
   const { room, enterRoom, exitRoom } = useTextsyncContext();
@@ -40,8 +41,10 @@ export default function TextsyncRoomConfig() {
       <div className="flex justify-center space-x-4 my-4">
         <TextsyncRoomButton
           allowed={codeStatus === "empty"}
-          onClick={() => {
-            enterRoom({ id: generateRoomId() });
+          onClick={async () => {
+            const room = { id: generateRoomId() };
+            addData(room.id);
+            enterRoom(room);
             setDisableInput(true);
           }}
         >
@@ -60,6 +63,7 @@ export default function TextsyncRoomConfig() {
           color="red"
           allowed={room.id !== undefined}
           onClick={() => {
+            deleteData(room.id);
             exitRoom();
             setDisableInput(false);
           }}

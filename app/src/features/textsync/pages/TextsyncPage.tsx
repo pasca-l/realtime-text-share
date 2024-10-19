@@ -1,3 +1,4 @@
+import TextsyncRoomCleanup from "../components/TextsyncRoomCleanup";
 import TextsyncRoomConfig from "../components/TextsyncRoomConfig";
 import TextsyncRoomContent from "../components/TextsyncRoomContent";
 
@@ -12,6 +13,7 @@ export default function TextsyncPage() {
       <TextsyncRoomConfig />
       <hr className="m-4" />
       <TextsyncRoomContent />
+      <TextsyncRoomCleanup />
     </>
   );
 }
