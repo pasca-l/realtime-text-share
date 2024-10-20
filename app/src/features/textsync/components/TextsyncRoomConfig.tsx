@@ -4,10 +4,9 @@ import { ChangeEvent, useEffect, useRef, useState, KeyboardEvent } from "react";
 
 import { useTextsyncContext } from "../contexts/TextsyncContext";
 import { generateRoomId } from "../utils/room";
-import { addData, deleteData } from "../utils/database";
 
 export default function TextsyncRoomConfig() {
-  const { room, enterRoom, exitRoom } = useTextsyncContext();
+  const { room, roomStatus, enterRoom, exitRoom } = useTextsyncContext();
 
   const [code, setCode] = useState("");
   const [codeStatus, setCodeStatus] = useState<CodeStatus>("empty");
@@ -40,20 +39,18 @@ export default function TextsyncRoomConfig() {
       <TextsyncRoomInput disable={disableInput} onChange={handleOnChange} />
       <div className="flex justify-center space-x-4 my-4">
         <TextsyncRoomButton
-          allowed={codeStatus === "empty"}
+          allowed={codeStatus === "empty" && roomStatus === "idle"}
           onClick={async () => {
-            const room = { id: generateRoomId() };
-            addData(room.id);
-            enterRoom(room);
+            enterRoom({ id: generateRoomId() }, "created");
             setDisableInput(true);
           }}
         >
           create room
         </TextsyncRoomButton>
         <TextsyncRoomButton
-          allowed={codeStatus === "full"}
+          allowed={codeStatus === "full" && roomStatus === "idle"}
           onClick={() => {
-            enterRoom({ id: code });
+            enterRoom({ id: code }, "joined");
             setDisableInput(true);
           }}
         >
@@ -63,8 +60,7 @@ export default function TextsyncRoomConfig() {
           color="red"
           allowed={room.id !== undefined}
           onClick={() => {
-            deleteData(room.id);
-            exitRoom();
+            exitRoom(room);
             setDisableInput(false);
           }}
         >

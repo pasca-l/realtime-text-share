@@ -2,12 +2,14 @@
 
 import { createContext, useContext, useState } from "react";
 
-import { Room } from "../types/room";
+import { Room, RoomStatus } from "../types/room";
+import { addData, deleteData } from "../utils/database";
 
 interface TextsyncContextType {
   room: Room;
-  enterRoom: (room: Room) => void;
-  exitRoom: () => void;
+  roomStatus: RoomStatus;
+  enterRoom: (room: Room, status: RoomStatus) => void;
+  exitRoom: (room: Room) => void;
 }
 
 const TextsyncContext = createContext<TextsyncContextType>(
@@ -20,12 +22,25 @@ export const TextsyncProvider = ({
   children: React.ReactNode;
 }) => {
   const [room, setRoom] = useState({} as Room);
+  const [roomStatus, setRoomStatus] = useState<RoomStatus>("idle");
 
-  const enterRoom = (room: Room) => setRoom(room);
-  const exitRoom = () => setRoom({} as Room);
+  const enterRoom = (room: Room, status: RoomStatus) => {
+    if (status === "created") {
+      addData(room.id);
+    }
+    setRoom(room);
+    setRoomStatus(status);
+  };
+  const exitRoom = (room: Room) => {
+    if (roomStatus === "created") {
+      deleteData(room.id);
+    }
+    setRoom({} as Room);
+    setRoomStatus("idle");
+  };
 
   return (
-    <TextsyncContext.Provider value={{ room, enterRoom, exitRoom }}>
+    <TextsyncContext.Provider value={{ room, roomStatus, enterRoom, exitRoom }}>
       {children}
     </TextsyncContext.Provider>
   );

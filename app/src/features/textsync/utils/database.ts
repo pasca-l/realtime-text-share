@@ -1,17 +1,23 @@
-import { DATABASE } from "@/utils/firebase/firebaseConfig";
 import { get, onValue, ref, remove, set } from "firebase/database";
+
+import { DATABASE } from "@/utils/firebase/firebaseConfig";
 
 export const addData = async (roomId: string) => {
   await set(ref(DATABASE, `${roomId}/`), "");
 };
 
 export const getData = async (roomId: string) => {
-  const snapshot = await get(ref(DATABASE, `${roomId}`));
+  const snapshot = await get(ref(DATABASE, `${roomId}/`));
   if (snapshot.exists()) {
     return snapshot.val();
   } else {
-    return "";
+    throw new Error(`room ${roomId} doesn't seem to exist...`);
   }
+};
+
+export const updateData = async (roomId: string, content: string) => {
+  await getData(roomId);
+  await set(ref(DATABASE, `${roomId}/`), content);
 };
 
 export const unsubscribeData = (
@@ -24,10 +30,6 @@ export const unsubscribeData = (
       setContent(data);
     }
   });
-};
-
-export const updateData = async (roomId: string, content: string) => {
-  await set(ref(DATABASE, `${roomId}/`), content);
 };
 
 export const deleteData = async (roomId: string) => {

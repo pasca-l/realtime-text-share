@@ -1,6 +1,8 @@
 "use client";
 
 import { ChangeEvent, useEffect, useState } from "react";
+
+import TextsyncErrorMessage from "./TextsyncErrorMessage";
 import { useTextsyncContext } from "../contexts/TextsyncContext";
 import { getData, unsubscribeData, updateData } from "../utils/database";
 
@@ -21,30 +23,46 @@ export default function TextsyncRoomContent() {
 
 function TextsyncRoomTextArea({ roomId }: { roomId: string }) {
   const [content, setContent] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const initVal = await getData(roomId);
-      setContent(initVal);
+      try {
+        setContent(await getData(roomId));
+      } catch (error) {
+        setErrorMsg((error as Error).message);
+      }
     };
     fetchData();
-  }, []);
+  }, [roomId]);
 
   useEffect(() => {
     const unsubscribe = unsubscribeData(roomId, setContent);
     return () => unsubscribe();
-  }, []);
+  }, [roomId]);
 
   const maxLength = 500;
   const placeholder = "Type here ...";
 
-  const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleOnChange = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    updateData(roomId, e.target.value);
+    try {
+      await updateData(roomId, e.target.value);
+    } catch (error) {
+      setErrorMsg((error as Error).message);
+    }
   };
 
   return (
     <div className="m-4">
+      {errorMsg !== "" && (
+        <TextsyncErrorMessage
+          message={errorMsg}
+          onDismiss={() => {
+            setErrorMsg("");
+          }}
+        />
+      )}
       <textarea
         value={content}
         onChange={handleOnChange}
