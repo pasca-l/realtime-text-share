@@ -15,7 +15,7 @@ export default function TextsyncErrorMessage({
   }
 
   return (
-    <div className="flex gap-2 fixed bottom-5 right-5 bg-red-100 text-red-800 border border-red-300 rounded-lg p-4 shadow-lg">
+    <div className="flex gap-2 fixed bottom-5 right-5 bg-red-100 text-red-800 border border-red-300 rounded-lg p-4 ml-5 shadow-lg">
       <div>{message}</div>
       <button
         onClick={() => {

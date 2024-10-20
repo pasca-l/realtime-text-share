@@ -35,7 +35,7 @@ export default function TextsyncRoomConfig() {
   }, [code]);
 
   return (
-    <div className="my-4">
+    <div className="m-4">
       <TextsyncRoomInput disable={disableInput} onChange={handleOnChange} />
       <div className="flex justify-center space-x-4 my-4">
         <TextsyncRoomButton
