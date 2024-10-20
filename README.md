@@ -2,7 +2,7 @@
 Shares content of textarea in realtime within virtual rooms.
 
 ## Website URL
-https://realtime-text-share.vercel.app/
+https://realtime-text-sharer.vercel.app/
 
 ## Screenshots
 ![](https://github.com/user-attachments/assets/368eb122-d12e-4e58-b3e8-e642a4a71657)
