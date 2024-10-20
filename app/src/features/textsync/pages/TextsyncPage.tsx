@@ -6,7 +6,7 @@ export default function TextsyncPage() {
   return (
     <>
       <div className="text-center">
-        <div className="text-3xl mt-4">Realtime Text Share</div>
+        <div className="text-3xl mt-4">Realtime Text Sharer</div>
         <div className="">Shares textarea contents in realtime</div>
         <hr className="m-4" />
       </div>

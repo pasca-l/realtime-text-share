@@ -1,5 +1,5 @@
-# Realtime Text Share
-Shares content of textarea within virtual rooms.
+# Realtime Text Sharer
+Shares content of textarea in realtime within virtual rooms.
 
 ## Website URL
 https://realtime-text-share.vercel.app/
@@ -23,5 +23,5 @@ $ docker compose up -d && docker compose exec app bash
 
 2. Run application.
 ```bash
-$ npm run dev
+$ npm i && npm run dev
 ```
