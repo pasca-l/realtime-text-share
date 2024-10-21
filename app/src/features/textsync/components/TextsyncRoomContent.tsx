@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 import TextsyncErrorMessage from "./TextsyncErrorMessage";
 import { useTextsyncContext } from "../contexts/TextsyncContext";
-import { getData, unsubscribeData, updateData } from "../utils/database";
+import { service } from "../services/service";
 
 export default function TextsyncRoomContent() {
   const { room } = useTextsyncContext();
@@ -28,7 +28,7 @@ function TextsyncRoomTextArea({ roomId }: { roomId: string }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setContent(await getData(roomId));
+        setContent(await service.getData(roomId));
       } catch (error) {
         setErrorMsg((error as Error).message);
       }
@@ -37,7 +37,7 @@ function TextsyncRoomTextArea({ roomId }: { roomId: string }) {
   }, [roomId]);
 
   useEffect(() => {
-    const unsubscribe = unsubscribeData(roomId, setContent);
+    const unsubscribe = service.unsubscribeData(roomId, setContent);
     return () => unsubscribe();
   }, [roomId]);
 
@@ -47,7 +47,7 @@ function TextsyncRoomTextArea({ roomId }: { roomId: string }) {
   const handleOnChange = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     try {
-      await updateData(roomId, e.target.value);
+      await service.updateData(roomId, e.target.value);
     } catch (error) {
       setErrorMsg((error as Error).message);
     }

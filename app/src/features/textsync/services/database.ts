@@ -1,12 +1,14 @@
 import { get, onValue, ref, remove, set } from "firebase/database";
 
+import { Service } from "./service";
+
 import { DATABASE } from "@/utils/firebase/firebaseConfig";
 
-export const addData = async (roomId: string) => {
+const addData = async (roomId: string) => {
   await set(ref(DATABASE, `${roomId}/`), "");
 };
 
-export const getData = async (roomId: string) => {
+const getData = async (roomId: string) => {
   const snapshot = await get(ref(DATABASE, `${roomId}/`));
   if (snapshot.exists()) {
     return snapshot.val();
@@ -15,12 +17,12 @@ export const getData = async (roomId: string) => {
   }
 };
 
-export const updateData = async (roomId: string, content: string) => {
+const updateData = async (roomId: string, content: string) => {
   await getData(roomId);
   await set(ref(DATABASE, `${roomId}/`), content);
 };
 
-export const unsubscribeData = (
+const unsubscribeData = (
   roomId: string,
   setContent: (content: string) => void
 ) => {
@@ -32,6 +34,14 @@ export const unsubscribeData = (
   });
 };
 
-export const deleteData = async (roomId: string) => {
+const deleteData = async (roomId: string) => {
   await remove(ref(DATABASE, `${roomId}/`));
+};
+
+export const firebaseService: Service = {
+  addData: addData,
+  getData: getData,
+  updateData: updateData,
+  unsubscribeData: unsubscribeData,
+  deleteData: deleteData,
 };

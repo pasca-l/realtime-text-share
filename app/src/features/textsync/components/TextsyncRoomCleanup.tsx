@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 
 import { useTextsyncContext } from "../contexts/TextsyncContext";
-import { deleteData } from "../utils/database";
+import { service } from "../services/service";
 
 export default function TextsyncRoomCleanup() {
   const { room } = useTextsyncContext();
 
   const handleCleanup = () => {
-    deleteData(room.id);
+    service.deleteData(room.id);
   };
 
   useEffect(() => {

@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useState } from "react";
 
+import { service } from "../services/service";
 import { Room, RoomStatus } from "../types/room";
-import { addData, deleteData } from "../utils/database";
 
 interface TextsyncContextType {
   room: Room;
@@ -26,14 +26,14 @@ export const TextsyncProvider = ({
 
   const enterRoom = (room: Room, status: RoomStatus) => {
     if (status === "created") {
-      addData(room.id);
+      service.addData(room.id);
     }
     setRoom(room);
     setRoomStatus(status);
   };
   const exitRoom = (room: Room) => {
     if (roomStatus === "created") {
-      deleteData(room.id);
+      service.deleteData(room.id);
     }
     setRoom({} as Room);
     setRoomStatus("idle");
